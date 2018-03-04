@@ -9,7 +9,7 @@
     "port":Number, //监听端口
     "option":{
         "enSlip": boolean，  // true:使用SLIP进行解包; false（默认值）:不使用SLIP进行解包
-        “decode\_id":{       // 
+        “decode_id":{       // 
             "enable":boolean, // true:数据包头部为解码器标识; false:数据包头部不使用解码器标识
             "type":String,  // 解码器标识类型：“int","string",下同
             "value":String/Number,  // 编码器标识内容，取决于type，全匹配
@@ -17,7 +17,7 @@
         }
     },
     ”head":{
-        "\_id":{    // 设备ID
+        "_id":{    // 设备ID
             "type":String,
             "size":Number, // 该字段长度，下同
             ”description":String
