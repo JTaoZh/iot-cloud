@@ -3,6 +3,7 @@
 ## 设备接入前端解码框架
 程序启动时根据参数读取Json文档，该文档可以来自MongoDB、RESTful API或者额外的传入参数。
 
+```
 {
     "_id":value, // 解码器ID
     "port":Number, //监听端口
@@ -50,3 +51,4 @@
         ”description":String
     }
 }
+```
