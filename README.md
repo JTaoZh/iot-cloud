@@ -44,8 +44,7 @@ config字段是编码器的配置，配置是否向消息总线发送消息以�
                 "db_en":boolean, //是否记录至MongoDB
                 “db_ip": string,    // 数据库IP
                 "db_port": Number,  // 数据库端口
-                "enSlip": boolean，  // true:使用SLIP进行解包; false（默认值）:不使用SLIP进行解包
-
+                "enSlip": boolean  // true:使用SLIP进行解包; false（默认值）:不使用SLIP进行解包
             },
             ”head":{
                 “decoder_id":{       // 
@@ -63,17 +62,19 @@ config字段是编码器的配置，配置是否向消息总线发送消息以�
             "body":[
                 // "body"数组内的对象如下所示，同构，可多层嵌套
                 {
+                    "key":string,   // 字段名
                     "sequence":number, // 该字段为数据包的第几个字段
                     "description”：string,
                     "type":String,  // 字段类型：“int","string","embedded"
                     "size":Number  // 当"type"为”int"或“string"时，此值有效，为该字段长度
-                    /* 当"type"为"embbeed"时，此值有效，内嵌一个"body"对象，可多层嵌套
-                    "body":"{   
+                    /* 当"type"为"embedded"时，此值有效，内嵌一个"body"对象，可多层嵌套
+                    "body":[{   
+                        “key":string, 
                         "sequence":number, 
                         "description”：string,
                         "type":String, 
                         "size":Number  
-                    } 
+                    }]
                     */           
                 }
             ],
@@ -89,5 +90,89 @@ config字段是编码器的配置，配置是否向消息总线发送消息以�
             }
         }
     ]
+}
+```
+
+---
+
+### 示例
+
+* decoder 示例
+```
+{
+    "decoder":[
+        {
+            "_id":1, // 解码器ID
+            "config":{
+                "enSlip": false
+            },
+            ”head":{
+                “decoder_id":{       
+                    "enable":true, 
+                    "type":"string",  
+                    "value":"example",  
+                    "description":"示例" 
+                }
+                "device_id":{   
+                    "type":“string”,
+                    "size":2, 
+                    ”description":"示例设备ID"
+                }
+            },
+            "body":[
+                {
+                    "key":"key2",   
+                    "sequence":2, 
+                    "description”："字段2",
+                    "type":“string”,
+                    "size":2            
+                },
+                {
+                    "key":"key1",   
+                    "sequence":1, 
+                    "description”："嵌套字段1",
+                    "type":“embedded”,
+                    "body":[{
+                        "key":"key1_2",   
+                        "sequence":2, 
+                        "description”："字段1.2",
+                        "type":“string”,
+                        "size":2  
+                    },
+                    {
+                        "key":"key1_1",   
+                        "sequence":1, 
+                        "description”："字段1.1",
+                        "type":“string”,
+                        "size":1  
+                    }
+                    ]           
+                },
+            ],
+            "checkcode":{
+                "enable":false                
+            }
+            "endcode":{
+                "enable":false
+            }
+        }
+    ]
+}
+```
+
+* 输入数据（字符串形式）
+```
+example01a23ce
+```
+
+* 输出记录（Json形式）
+```
+{
+    "device_id":"01",
+    "key1":{
+        "key1_1":"a",
+        "key1_2":"23",
+    },
+    "key2":"ce"
 }
 ```

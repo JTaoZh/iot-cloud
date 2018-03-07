@@ -1,0 +1,3 @@
+[submodule "decoder/c/jsmn"]
+	path = decoder/c/jsmn
+	url = https://github.com/zserge/jsmn.git
